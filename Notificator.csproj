@@ -2,16 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>Notificator</PackageId>
+    <PackageId>HaidaiTech.Notificator</PackageId>
     <Version>1.0.0</Version>
-    <icon>https://baltaio.blob.core.windows.net/static/images/icons/flunt-icon.png</icon>
+    <icon>https://www.haidai.com.br/nuget/notificator/icon.png</icon>
     <License>MIT</License>
     <Authors>Julien nascimento</Authors>
     <Company>Haidai Tech</Company>
     <PackageDescription>A single and objective notification Context project</PackageDescription>
     <Description>Avoid exceptions, use Notification Context pattern</Description>
     <RepositoryUrl>https://github.com/Haidai-Tech/notificator</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/Haidai-Tech/notificator</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Haidai-Tech/Notificator</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>Domain;DDD;Notification;Validation;Notificator</PackageTags>
@@ -19,4 +19,7 @@
     <Title>Notificator</Title>
     <Summary>Notificator is a Notification Pattern with your entities.</Summary>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="media\icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
