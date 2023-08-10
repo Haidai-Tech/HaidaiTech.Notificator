@@ -18,8 +18,10 @@
     <ReleaseNotes></ReleaseNotes>
     <Title>Notificator</Title>
     <Summary>Notificator is a Notification Pattern with your entities.</Summary>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <None Include="media\icon.png" Pack="true" PackagePath="\" />
+    <None Include="Readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
