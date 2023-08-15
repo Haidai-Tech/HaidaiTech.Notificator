@@ -15,8 +15,6 @@ namespace Notificator.Interfaces
         bool HasNotifications();
         void ClearNotifications();
         IReadOnlyList<NotificationContextMessage> GetNotifications();
-        IReadOnlyList<NotificationContextMessage> GetNotifications(Expression<Func<NotificationContextMessage, bool>> predicate);
-        Task<IReadOnlyList<NotificationContextMessage>> GetNotificationsAsync(Expression<Func<NotificationContextMessage, bool>> predicate);
-
+        Task<IReadOnlyList<NotificationContextMessage>> GetNotificationsAsync();
     }
 }
