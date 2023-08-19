@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <PackageId>HaidaiTech.Notificator</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.1.1</Version>
     <icon>https://www.haidai.com.br/nuget/notificator/icon.png</icon>
     <License>MIT</License>
     <Authors>Julien nascimento</Authors>
@@ -23,8 +23,5 @@
   <ItemGroup>
     <None Include="..\media\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\Readme.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.7.1" />
   </ItemGroup>
 </Project>
