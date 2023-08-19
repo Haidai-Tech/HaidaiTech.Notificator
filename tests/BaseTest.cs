@@ -1,18 +1,18 @@
 using Moq.AutoMock;
-using Notificator.Tests.Concrete;
+using Notificator.NotificationContextPattern;
 
 namespace Notificator.Tests
 {
     public abstract class BaseTest
     {
-        protected NotificationContextConcrete notificationContextConcrete;
+        protected NotificationContext notificationContext;
 
         protected BaseTest()
         {
             var mocker = new AutoMocker();
 
-            notificationContextConcrete =
-                mocker.CreateInstance<NotificationContextConcrete>();
+            notificationContext =
+                mocker.CreateInstance<NotificationContext>();
         }
     }
 }

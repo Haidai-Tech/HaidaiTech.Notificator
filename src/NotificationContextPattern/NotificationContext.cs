@@ -4,13 +4,10 @@ using Notificator.Interfaces;
 
 namespace Notificator.NotificationContextPattern;
 
-public abstract class NotificationContext
+public sealed class NotificationContext
     : INotificationContext
 {
     private readonly List<NotificationContextMessage> _notifications = new();
-
-    protected NotificationContext()
-    { }
 
     /// <summary>
     /// Add a Notification Message in a Notification Context

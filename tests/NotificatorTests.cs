@@ -2,16 +2,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Moq.AutoMock;
-
 using Notificator.Helpers;
 using Notificator.NotificationContextPattern;
-using Notificator.Tests.Concrete;
 using Notificator.Tests.Customer;
 using Notificator.Tests.Helpers;
 using Notificator.Tests.Validator;
-
-using FluentValidation.TestHelper;
 
 using Xunit;
 using System.Collections.Generic;
@@ -25,7 +20,7 @@ public class NotificatorTests
     [Fact]
     public void ShouldHaveNotificationsUsingHelpers()
     {
-        notificationContextConcrete.AddNotification(
+        notificationContext.AddNotification(
             new NotificationContextMessage(
                 "A normal notification",
                 NotificationContextErrorLevelHelper.NORMAL,
@@ -33,7 +28,7 @@ public class NotificatorTests
             )
         );
 
-        notificationContextConcrete.AddNotification(
+        notificationContext.AddNotification(
             new NotificationContextMessage(
                 "An attention notification",
                 NotificationContextErrorLevelHelper.ATTENTION,
@@ -41,7 +36,7 @@ public class NotificatorTests
             )
         );
 
-        notificationContextConcrete.AddNotification(
+        notificationContext.AddNotification(
             new NotificationContextMessage(
                 "A critical notification",
                 NotificationContextErrorLevelHelper.CRITICAL,
@@ -49,7 +44,7 @@ public class NotificatorTests
             )
         );
 
-        notificationContextConcrete.AddNotification(
+        notificationContext.AddNotification(
             new NotificationContextMessage(
                 "A panic notification",
                 NotificationContextErrorLevelHelper.PANIC,
@@ -57,14 +52,14 @@ public class NotificatorTests
             )
         );
 
-        Assert.True(notificationContextConcrete.HasNotifications());
+        Assert.True(notificationContext.HasNotifications());
     }
 
     [Fact]
     public async Task ShouldHaveNotificationsUsingHelpersAsync()
     {
 
-        await notificationContextConcrete.AddNotificationAsync(
+        await notificationContext.AddNotificationAsync(
             new NotificationContextMessage(
                 "A normal notification",
                 NotificationContextErrorLevelHelper.NORMAL,
@@ -72,7 +67,7 @@ public class NotificatorTests
             )
         );
 
-        await notificationContextConcrete.AddNotificationAsync(
+        await notificationContext.AddNotificationAsync(
             new NotificationContextMessage(
                 "An Attention notification",
                 NotificationContextErrorLevelHelper.ATTENTION,
@@ -80,7 +75,7 @@ public class NotificatorTests
             )
         );
 
-        await notificationContextConcrete.AddNotificationAsync(
+        await notificationContext.AddNotificationAsync(
             new NotificationContextMessage(
                 "A critical notification",
                 NotificationContextErrorLevelHelper.CRITICAL,
@@ -88,7 +83,7 @@ public class NotificatorTests
             )
         );
 
-        await notificationContextConcrete.AddNotificationAsync(
+        await notificationContext.AddNotificationAsync(
             new NotificationContextMessage(
                 "A panic notification",
                 NotificationContextErrorLevelHelper.PANIC,
@@ -96,7 +91,7 @@ public class NotificatorTests
             )
         );
 
-        var result = Task.Run(() => notificationContextConcrete.HasNotifications());
+        var result = Task.Run(() => notificationContext.HasNotifications());
 
         Assert.True(result.Result);
     }
@@ -110,7 +105,7 @@ public class NotificatorTests
     )
     {
 
-        notificationContextConcrete.AddNotification(
+        notificationContext.AddNotification(
             new NotificationContextMessage(
                 "A normal notification",
                 errorLevel,
@@ -118,8 +113,8 @@ public class NotificatorTests
             )
         );
 
-        Assert.True(notificationContextConcrete.HasNotifications()
-        && notificationContextConcrete
+        Assert.True(notificationContext.HasNotifications()
+        && notificationContext
                 .GetNotifications()
                 .Where(x => x.ErrorCode == errorCode &&
                             x.ErrorLevel == errorLevel)
@@ -130,47 +125,42 @@ public class NotificatorTests
     public void ShouldClearNotifications()
     {
 
-        notificationContextConcrete.AddNotification(
+        notificationContext.AddNotification(
             new NotificationContextMessage(
                 "xptp"
             )
         );
 
-        notificationContextConcrete.AddNotification(
+        notificationContext.AddNotification(
             new NotificationContextMessage(
                 "A normal notification",
                 "NORMAL"
             )
         );
 
-        notificationContextConcrete.AddNotification(
+        notificationContext.AddNotification(
             new NotificationContextMessage(
                 "An Attention notification",
                 "ATTENTION"
             )
         );
 
-        notificationContextConcrete.AddNotification(
+        notificationContext.AddNotification(
             new NotificationContextMessage(
                 "A critical notification",
                 "CRITICAL"
             )
         );
 
-        notificationContextConcrete.ClearNotifications();
+        notificationContext.ClearNotifications();
 
-        Assert.True(!notificationContextConcrete.HasNotifications() &&
-                    notificationContextConcrete.GetNotifications().Count == 0);
+        Assert.True(!notificationContext.HasNotifications() &&
+                    notificationContext.GetNotifications().Count == 0);
     }
 
     [Fact]
     public async Task ShouldClearNotificationsAsync()
     {
-        var mocker = new AutoMocker();
-
-        var notificationContext =
-            mocker.CreateInstance<NotificationContextConcrete>();
-
         await notificationContext.AddNotificationAsync(
             new NotificationContextMessage(
                 "A normal notification",
@@ -207,14 +197,14 @@ public class NotificatorTests
         string errorMessage
     )
     {
-        notificationContextConcrete.AddNotification(
+        notificationContext.AddNotification(
             new NotificationContextMessage(
                 errorMessage
             )
         );
 
-        Assert.True(notificationContextConcrete.HasNotifications()
-        && notificationContextConcrete
+        Assert.True(notificationContext.HasNotifications()
+        && notificationContext
                 .GetNotifications()
                 .Where(x => x.Message == errorMessage &&
                             x.ErrorLevel is null &&
@@ -252,10 +242,10 @@ public class NotificatorTests
             }
         );
 
-        notificationContextConcrete.AddNotifications(_notificationContextMessage);
+        notificationContext.AddNotifications(_notificationContextMessage);
 
         Assert.False(result.IsValid);
-        Assert.True(notificationContextConcrete.HasNotifications());
+        Assert.True(notificationContext.HasNotifications());
     }
 }
 
