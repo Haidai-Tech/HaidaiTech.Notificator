@@ -21,7 +21,10 @@
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="media\icon.png" Pack="true" PackagePath="\" />
-    <None Include="Readme.md" Pack="true" PackagePath="\" />
+    <None Include="..\media\icon.png" Pack="true" PackagePath="\" />
+    <None Include="..\Readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
   </ItemGroup>
 </Project>

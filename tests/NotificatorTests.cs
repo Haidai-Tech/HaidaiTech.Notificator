@@ -1,155 +1,262 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
+
 using Moq.AutoMock;
-using Notificator.Enums;
+
+using Notificator.Helpers;
 using Notificator.NotificationContextPattern;
 using Notificator.Tests.Concrete;
-using Xunit;
+using Notificator.Tests.Customer;
+using Notificator.Tests.Helpers;
+using Notificator.Tests.Validator;
 
-namespace Notificator.Tests
+using FluentValidation.TestHelper;
+
+using Xunit;
+using System.Collections.Generic;
+using FluentValidation;
+
+namespace Notificator.Tests;
+
+public class NotificatorTests
+    : BaseTest
 {
-    public class NotificatorTests
+    [Fact]
+    public void ShouldHaveNotificationsUsingHelpers()
+    {
+        notificationContextConcrete.AddNotification(
+            new NotificationContextMessage(
+                "A normal notification",
+                NotificationContextErrorLevelHelper.NORMAL,
+                ErrorCodeTestHelper.ERROR_CODE_100
+            )
+        );
+
+        notificationContextConcrete.AddNotification(
+            new NotificationContextMessage(
+                "An attention notification",
+                NotificationContextErrorLevelHelper.ATTENTION,
+                ErrorCodeTestHelper.ERROR_CODE_101
+            )
+        );
+
+        notificationContextConcrete.AddNotification(
+            new NotificationContextMessage(
+                "A critical notification",
+                NotificationContextErrorLevelHelper.CRITICAL,
+                ErrorCodeTestHelper.ERROR_CODE_102
+            )
+        );
+
+        notificationContextConcrete.AddNotification(
+            new NotificationContextMessage(
+                "A panic notification",
+                NotificationContextErrorLevelHelper.PANIC,
+                ErrorCodeTestHelper.ERROR_CODE_103
+            )
+        );
+
+        Assert.True(notificationContextConcrete.HasNotifications());
+    }
+
+    [Fact]
+    public async Task ShouldHaveNotificationsUsingHelpersAsync()
     {
 
+        await notificationContextConcrete.AddNotificationAsync(
+            new NotificationContextMessage(
+                "A normal notification",
+                NotificationContextErrorLevelHelper.NORMAL,
+                ErrorCodeTestHelper.ERROR_CODE_100
+            )
+        );
 
-        [Fact]
-        public void ShouldHaveNotifications()
-        {
-            var mocker = new AutoMocker();
+        await notificationContextConcrete.AddNotificationAsync(
+            new NotificationContextMessage(
+                "An Attention notification",
+                NotificationContextErrorLevelHelper.ATTENTION,
+                ErrorCodeTestHelper.ERROR_CODE_101
+            )
+        );
 
-            var notificationContext =
-                mocker.CreateInstance<NotificationContextConcrete>();
+        await notificationContextConcrete.AddNotificationAsync(
+            new NotificationContextMessage(
+                "A critical notification",
+                NotificationContextErrorLevelHelper.CRITICAL,
+                ErrorCodeTestHelper.ERROR_CODE_102
+            )
+        );
 
-            notificationContext.AddNotification(
-                new NotificationContextMessage(
-                    "A normal notification",
-                    EnumNotificationContextErrorLevel.NORMAL
-                )
-            );
+        await notificationContextConcrete.AddNotificationAsync(
+            new NotificationContextMessage(
+                "A panic notification",
+                NotificationContextErrorLevelHelper.PANIC,
+                ErrorCodeTestHelper.ERROR_CODE_103
+            )
+        );
 
-            notificationContext.AddNotification(
-                new NotificationContextMessage(
-                    "A critical notification",
-                    EnumNotificationContextErrorLevel.ATTENTION
-                )
-            );
+        var result = Task.Run(() => notificationContextConcrete.HasNotifications());
 
-            notificationContext.AddNotification(
-                new NotificationContextMessage(
-                    "A critical notification",
-                    EnumNotificationContextErrorLevel.CRITICAL
-                )
-            );
+        Assert.True(result.Result);
+    }
 
-            Assert.True(notificationContext.HasNotifications() &&
-                        notificationContext.GetNotifications().Count == 3);
-        }
+    [Theory]
+    [InlineData("OMEGA_LEVEL", "ERR123456")]
+    [InlineData("OMEGA_LEVEL", "123456")]
+    public void ShouldHaveNotificationsUsingCustomizedErrorLevelAndErrorCode(
+        string errorLevel,
+        string errorCode
+    )
+    {
 
-        [Fact]
-        public async Task ShouldHaveNotificationsAsync()
-        {
-            var mocker = new AutoMocker();
+        notificationContextConcrete.AddNotification(
+            new NotificationContextMessage(
+                "A normal notification",
+                errorLevel,
+                errorCode
+            )
+        );
 
-            var notificationContext =
-                mocker.CreateInstance<NotificationContextConcrete>();
+        Assert.True(notificationContextConcrete.HasNotifications()
+        && notificationContextConcrete
+                .GetNotifications()
+                .Where(x => x.ErrorCode == errorCode &&
+                            x.ErrorLevel == errorLevel)
+                .ToList().Count == 1);
+    }
 
-            await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
-                    "A normal notification",
-                    EnumNotificationContextErrorLevel.NORMAL
-                )
-            );
+    [Fact]
+    public void ShouldClearNotifications()
+    {
 
-            await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
-                    "A critical notification",
-                    EnumNotificationContextErrorLevel.ATTENTION
-                )
-            );
+        notificationContextConcrete.AddNotification(
+            new NotificationContextMessage(
+                "xptp"
+            )
+        );
 
-            await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
-                    "A critical notification",
-                    EnumNotificationContextErrorLevel.CRITICAL
-                )
-            );
+        notificationContextConcrete.AddNotification(
+            new NotificationContextMessage(
+                "A normal notification",
+                "NORMAL"
+            )
+        );
 
-            var result = Task.Run(() => notificationContext.HasNotifications());
+        notificationContextConcrete.AddNotification(
+            new NotificationContextMessage(
+                "An Attention notification",
+                "ATTENTION"
+            )
+        );
 
-            Assert.True(result.Result);
+        notificationContextConcrete.AddNotification(
+            new NotificationContextMessage(
+                "A critical notification",
+                "CRITICAL"
+            )
+        );
 
-        }
+        notificationContextConcrete.ClearNotifications();
 
-        [Fact]
-        public void ShouldClearNotifications()
-        {
-            var mocker = new AutoMocker();
+        Assert.True(!notificationContextConcrete.HasNotifications() &&
+                    notificationContextConcrete.GetNotifications().Count == 0);
+    }
 
-            var notificationContext =
-                mocker.CreateInstance<NotificationContextConcrete>();
+    [Fact]
+    public async Task ShouldClearNotificationsAsync()
+    {
+        var mocker = new AutoMocker();
 
-            notificationContext.AddNotification(
-                new NotificationContextMessage(
-                    "A normal notification",
-                    EnumNotificationContextErrorLevel.NORMAL
-                )
-            );
+        var notificationContext =
+            mocker.CreateInstance<NotificationContextConcrete>();
 
-            notificationContext.AddNotification(
-                new NotificationContextMessage(
-                    "A critical notification",
-                    EnumNotificationContextErrorLevel.ATTENTION
-                )
-            );
+        await notificationContext.AddNotificationAsync(
+            new NotificationContextMessage(
+                "A normal notification",
+                "NORMAL"
+            )
+        );
 
-            notificationContext.AddNotification(
-                new NotificationContextMessage(
-                    "A critical notification",
-                    EnumNotificationContextErrorLevel.CRITICAL
-                )
-            );
+        await notificationContext.AddNotificationAsync(
+            new NotificationContextMessage(
+                "An Attention notification",
+                "ATTENTION"
+            )
+        );
 
-            notificationContext.ClearNotifications();
+        await notificationContext.AddNotificationAsync(
+            new NotificationContextMessage(
+                "A critical notification",
+                "CRITICAL"
+            )
+        );
 
-            Assert.True(!notificationContext.HasNotifications() &&
-                        notificationContext.GetNotifications().Count == 0);
-        }
+        notificationContext.ClearNotifications();
 
-        [Fact]
-        public async Task ShouldClearNotificationsAsync()
-        {
-            var mocker = new AutoMocker();
+        var result = Task.Run(() => !notificationContext.HasNotifications() &&
+                                        notificationContext.GetNotificationsAsync().Result.Count == 0);
 
-            var notificationContext =
-                mocker.CreateInstance<NotificationContextConcrete>();
+        Assert.True(result.Result);
+    }
 
-            await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
-                    "A normal notification",
-                    EnumNotificationContextErrorLevel.NORMAL
-                )
-            );
+    [Theory]
+    [InlineData("A normal notification")]
+    [InlineData("A critical notification")]
+    public void ShouldAddNotificationWithoutErrorCodeAndErrorLevel(
+        string errorMessage
+    )
+    {
+        notificationContextConcrete.AddNotification(
+            new NotificationContextMessage(
+                errorMessage
+            )
+        );
 
-            await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
-                    "A critical notification",
-                    EnumNotificationContextErrorLevel.ATTENTION
-                )
-            );
+        Assert.True(notificationContextConcrete.HasNotifications()
+        && notificationContextConcrete
+                .GetNotifications()
+                .Where(x => x.Message == errorMessage &&
+                            x.ErrorLevel is null &&
+                            x.ErrorCode is null)
+                .ToList().Count == 1);
 
-            await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
-                    "A critical notification",
-                    EnumNotificationContextErrorLevel.CRITICAL
-                )
-            );
+    }
 
-            notificationContext.ClearNotifications();
 
-            var result = Task.Run(() => !notificationContext.HasNotifications() &&
-                                            notificationContext.GetNotificationsAsync().Result.Count == 0);
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void ShouldToUseFluentValidatorData(string name)
+    {
+        var customer = new CustomerTest(
+            Guid.NewGuid(),
+            name
+        );
 
-            Assert.True(result.Result);
-        }
+        var validator = new CustomerTestValidator();
+
+        var result = validator.Validate(customer);
+
+        List<NotificationContextMessage> _notificationContextMessage = new();
+
+        result.Errors.ForEach(x =>
+            {
+                _notificationContextMessage.Add(
+                    new NotificationContextMessage(
+                        x.ErrorMessage,
+                        typeof(Severity).GetEnumName(x.Severity),
+                        x.ErrorCode
+                    )
+                );
+            }
+        );
+
+        notificationContextConcrete.AddNotifications(_notificationContextMessage);
+
+        Assert.False(result.IsValid);
+        Assert.True(notificationContextConcrete.HasNotifications());
     }
 }
+
 

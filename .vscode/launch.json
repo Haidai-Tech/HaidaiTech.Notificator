@@ -2,18 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            // Use IntelliSense to find out which attributes exist for C# debugging
-            // Use hover for the description of the existing attributes
-            // For further information visit https://github.com/dotnet/vscode-csharp/blob/main/debugger-launchjson.md
+            // Usar o IntelliSense para descobrir quais atributos existem para a depuração de C#
+            // Passe o mouse sobre a tela para ver a descrição dos atributos existentes
+            // Para obter mais informações, acesse https://github.com/dotnet/vscode-csharp/blob/main/debugger-launchjson.md
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
+            // Se tiver alterado as estruturas de destino, certifique-se de atualizar o caminho do programa.
             "program": "${workspaceFolder}/tests/bin/Debug/net6.0/Notificator.Tests.dll",
             "args": [],
             "cwd": "${workspaceFolder}/tests",
-            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            // Para obter mais informações sobre o campo \"console\", confira https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false
         },
