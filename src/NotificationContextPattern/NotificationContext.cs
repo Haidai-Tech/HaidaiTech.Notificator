@@ -59,4 +59,27 @@ public sealed class NotificationContext
     /// </summary>
     public void ClearNotifications()
         => _notifications.Clear();
+
+    public void AddNotification(string message)
+        => _notifications.Add(new NotificationContextMessage(message));
+
+
+    public async Task AddNotificationAsync(string message)
+        => await Task.Run(() => { _notifications.Add(new NotificationContextMessage(message)); });
+
+    public void AddNotifications(IEnumerable<string> messages)
+    {
+        foreach (string message in messages)
+            _notifications.Add(new NotificationContextMessage(message));
+
+    }
+    
+    public async Task AddNotificationsAsync(IEnumerable<string> messages)
+        => await Task.Run(
+            () =>
+            {
+                foreach (string message in messages)
+                    _notifications.Add(new NotificationContextMessage(message));
+            }
+        );
 }

@@ -1,16 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using FluentValidation;
 using Notificator.Helpers;
 using Notificator.NotificationContextPattern;
 using Notificator.Tests.Customer;
 using Notificator.Tests.Helpers;
 using Notificator.Tests.Validator;
-
 using Xunit;
-using System.Collections.Generic;
-using FluentValidation;
 
 namespace Notificator.Tests;
 
@@ -211,6 +209,82 @@ public class NotificatorTests
                             x.ErrorCode is null)
                 .ToList().Count == 1);
 
+    }
+
+    [Theory]
+    [InlineData("A normal notification")]
+    [InlineData("A critical notification")]
+    public void ShouldAddSingleMessageInNotificationContext(
+        string errorMessage
+    )
+    {
+        notificationContext.AddNotification(
+            errorMessage
+        );
+
+        Assert.True(notificationContext.HasNotifications()
+        && notificationContext
+                .GetNotifications()
+                .Where(x => x.Message == errorMessage &&
+                            x.ErrorLevel is null &&
+                            x.ErrorCode is null)
+                .ToList().Count == 1);
+
+    }
+
+    [Theory]
+    [InlineData("A normal notification")]
+    [InlineData("A critical notification")]
+    public async Task ShouldAddSingleMessageInNotificationContextAsync(
+        string errorMessage
+    )
+    {
+        await notificationContext.AddNotificationAsync(
+            errorMessage
+        );
+
+        Assert.True(notificationContext.HasNotifications()
+        && notificationContext
+                .GetNotifications()
+                .Where(x => x.Message == errorMessage &&
+                            x.ErrorLevel is null &&
+                            x.ErrorCode is null)
+                .ToList().Count == 1);
+
+    }
+
+    [Fact]
+    public void ShouldAddListOfStringToNotificationContext()
+    {
+        List<string> notifications = new()
+        {
+            "Notification 1",
+            "Notification 2"
+        };
+
+        notificationContext.AddNotifications(
+            notifications
+        );
+
+        Assert.True(notificationContext.HasNotifications()
+                    && notificationContext.GetNotifications().Count == notifications.Count);
+    }
+
+    [Fact]
+    public async Task ShouldAddListOfStringToNotificationContextAsync()
+    {
+        List<string> notifications = new()
+        {
+            "Notification 1",
+            "Notification 2"
+        };
+
+        await notificationContext.AddNotificationsAsync(
+            notifications
+        );
+
+        Assert.True(notificationContext.HasNotifications()
+                    && notificationContext.GetNotifications().Count == notifications.Count);
     }
 
 
