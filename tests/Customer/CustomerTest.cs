@@ -1,6 +1,6 @@
 using System;
 
-namespace Notificator.Tests.Customer
+namespace HaidaiTech.Notificator.Tests.Customer
 {
     public class CustomerTest
     {

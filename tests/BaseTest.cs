@@ -1,18 +1,18 @@
 using Moq.AutoMock;
-using Notificator.NotificationContextPattern;
+using HaidaiTech.Notificator.NotificationContextMessages;
+using HaidaiTech.Notificator.NotificationContextPattern;
 
-namespace Notificator.Tests
+namespace HaidaiTech.Notificator.Tests
 {
     public abstract class BaseTest
     {
-        protected NotificationContext notificationContext;
-
+        protected NotificationContext<NotificationContextMessage> notificationContext;
         protected BaseTest()
         {
             var mocker = new AutoMocker();
 
             notificationContext =
-                mocker.CreateInstance<NotificationContext>();
+                mocker.CreateInstance<NotificationContext<NotificationContextMessage>>();
         }
     }
 }

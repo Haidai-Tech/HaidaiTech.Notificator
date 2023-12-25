@@ -1,4 +1,4 @@
-using Notificator.Helpers;
+using HaidaiTech.Notificator.Helpers;
 
 namespace tests.Helpers
 {

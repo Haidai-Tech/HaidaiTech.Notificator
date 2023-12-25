@@ -1,7 +1,7 @@
 using FluentValidation;
-using Notificator.Tests.Customer;
+using HaidaiTech.Notificator.Tests.Customer;
 
-namespace Notificator.Tests.Validator
+namespace HaidaiTech.Notificator.Tests.Validator
 {
     public class CustomerTestValidator
         : AbstractValidator<CustomerTest>

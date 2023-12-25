@@ -1,7 +1,7 @@
 
-using Notificator.Helpers;
+using HaidaiTech.Notificator.Helpers;
 
-namespace Notificator.Tests.Helpers
+namespace HaidaiTech.Notificator.Tests.Helpers
 {
     public class ErrorCodeTestHelper
         : NotificatorErrorCodesHelper
