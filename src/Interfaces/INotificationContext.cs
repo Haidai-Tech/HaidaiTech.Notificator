@@ -1,25 +1,23 @@
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Notificator.NotificationContextPattern;
 
-namespace Notificator.Interfaces
+namespace HaidaiTech.Notificator.Interfaces
 {
-    public interface INotificationContext
+    /// <summary>
+    /// The Contract for Notification Context.
+    /// </summary>
+    /// <typeparam name="TMessage">TMessage represents the INotificationContextMessage</typeparam>
+    public interface INotificationContext<TMessage>
+    where TMessage : INotificationContextMessage
     {
-
-        void AddNotification(string message);
-        void AddNotification(NotificationContextMessage message);
-        Task AddNotificationAsync(string message);
-        Task AddNotificationAsync(NotificationContextMessage message);
-        void AddNotifications(IEnumerable<string> messages);
-        void AddNotifications(IEnumerable<NotificationContextMessage> messages);
-        Task AddNotificationsAsync(IEnumerable<string> messages);
-        Task AddNotificationsAsync(IEnumerable<NotificationContextMessage> messages);
+        void AddNotification(TMessage message);
+        Task AddNotificationAsync(TMessage message);
+        void AddNotifications(IEnumerable<TMessage> messages);
+        Task AddNotificationsAsync(IEnumerable<TMessage> messages);
         bool HasNotifications();
+        IReadOnlyList<TMessage> GetNotifications();
+        Task<IReadOnlyList<TMessage>> GetNotificationsAsync();
         void ClearNotifications();
-        IReadOnlyList<NotificationContextMessage> GetNotifications();
-        Task<IReadOnlyList<NotificationContextMessage>> GetNotificationsAsync();
     }
+
 }
