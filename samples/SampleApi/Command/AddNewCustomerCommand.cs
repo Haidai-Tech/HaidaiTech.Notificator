@@ -1,3 +1,4 @@
+using HaidaiTech.Notificator.Interfaces;
 using MediatR;
 
 namespace SampleApi.Command

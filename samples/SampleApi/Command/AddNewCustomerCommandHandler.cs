@@ -1,7 +1,8 @@
 using MediatR;
-using Notificator.Interfaces;
-using Notificator.NotificationContextPattern;
-using Notificator.Helpers;
+using HaidaiTech.Notificator.Interfaces;
+using HaidaiTech.Notificator.Helpers;
+using HaidaiTech.Notificator.NotificationContextMessages;
+
 
 namespace SampleApi.Command
 {
@@ -9,17 +10,20 @@ namespace SampleApi.Command
         : IRequestHandler<AddNewCustomerCommand, string>
     {
 
-        private readonly INotificationContext _notificationContext;
+        private readonly INotificationContext<NotificationContextMessage> _notificationContext;
 
 
-        public AddNewCustomerCommandHandler(INotificationContext notificationContext)
+        public AddNewCustomerCommandHandler(INotificationContext<NotificationContextMessage> notificationContext)
         {
             _notificationContext = notificationContext;
         }
 
-        public async Task<string> Handle(AddNewCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(
+            AddNewCustomerCommand request,
+            CancellationToken cancellationToken
+        )
         {
-            //this is an example !!!!
+            //this code is only AN EXAMPLE, read again : E-X-A-M-P-L-E !!!! XD~
 
             if (request.Name is null)
                 _notificationContext.AddNotification(new NotificationContextMessage(
@@ -35,10 +39,19 @@ namespace SampleApi.Command
                     NotificatorErrorCodesHelper.ERROR_CODE_072
                 ));
 
-            if (!_notificationContext.HasNotifications())
-                return await Task.Run(() => { return "OK"; });
 
-            return await Task.FromResult("Some errors needs you attention");
+            if (_notificationContext.HasNotifications())
+                return await Task.Run(() =>
+                {
+                    return "Problems";
+                });
+            else
+                return await Task.Run(() =>
+                {
+                    return "Ok";
+                });
+
+
 
         }
     }

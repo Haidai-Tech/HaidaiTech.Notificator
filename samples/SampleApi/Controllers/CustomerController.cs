@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Notificator.Interfaces;
+using HaidaiTech.Notificator.Interfaces;
 using SampleApi.Command;
+using HaidaiTech.Notificator.NotificationContextMessages;
 
 namespace SampleApi.Controllers
 {
@@ -16,11 +17,11 @@ namespace SampleApi.Controllers
     {
 
         private readonly IMediator _mediator;
-        private readonly INotificationContext _notificationContext;
+        private readonly INotificationContext<NotificationContextMessage> _notificationContext;
 
         public CustomerController(
             IMediator mediator,
-            INotificationContext notificationContext
+            INotificationContext<NotificationContextMessage> notificationContext
         )
         {
             _mediator = mediator;
