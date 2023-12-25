@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
             // Usar o IntelliSense para descobrir quais atributos existem para a depuração de C#
             // Passe o mouse sobre a tela para ver a descrição dos atributos existentes
@@ -10,7 +11,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // Se tiver alterado as estruturas de destino, certifique-se de atualizar o caminho do programa.
-            "program": "${workspaceFolder}/tests/bin/Debug/net6.0/Notificator.Tests.dll",
+            "program": "${workspaceFolder}/tests/bin/Debug/net8.0/HaidaiTech.Notificator.Tests.dll",
             "args": [],
             "cwd": "${workspaceFolder}/tests",
             // Para obter mais informações sobre o campo \"console\", confira https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -22,5 +23,6 @@
             "type": "coreclr",
             "request": "attach"
         }
+        
     ]
 }

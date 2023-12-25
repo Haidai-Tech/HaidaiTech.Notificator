@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // Se tiver alterado as estruturas de destino, certifique-se de atualizar o caminho do programa.
-            "program": "${workspaceFolder}/SampleApi/bin/Debug/net7.0/SampleApi.dll",
+            "program": "${workspaceFolder}/SampleApi/bin/Debug/net8.0/SampleApi.dll",
             "args": [],
             "cwd": "${workspaceFolder}/SampleApi",
             "stopAtEntry": false,
