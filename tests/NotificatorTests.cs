@@ -343,9 +343,9 @@ namespace HaidaiTech.Notificator.Tests
 
             customNotificationContext.AddNotification(message);
 
-            var messageInContext = notificationContext.GetNotifications().FirstOrDefault();
+            var messageInContext = customNotificationContext.GetNotifications();
 
-            Assert.True(messageInContext.GetType().Equals(typeof(MyOwnNotificationContextMessage)));
+            Assert.True(messageInContext.First().GetType().Equals(typeof(MyOwnNotificationContextMessage)));
         }
 
 
