@@ -54,6 +54,14 @@ In projects using a dependency injection container, it is necessary to register 
 // Register in your DI
 builder.Services.AddScoped<INotificationContext<NotificationContextMessage>, NotificationContext<NotificationContextMessage>>();
 
+
+//and use it !
+_notificationContext.AddNotification(new NotificationContextMessage(
+                    "xpto",
+                    NotificationContextErrorLevelHelper.CRITICAL,
+                    NotificatorErrorCodesHelper.ERROR_CODE_072
+                ));
+
 // Or you can create your own Notification Context message
 // This class needs to implement `INotificationContextMessage`, and in the container, you must declare
 public class MyOwnNotificationContextMessage : INotificationContextMessage
@@ -81,4 +89,15 @@ public class MyOwnNotificationContextMessage : INotificationContextMessage
 }
 // and, Register in your DI
 builder.Services.AddScoped<INotificationContext<MyOwnNotificationContextMessage>, NotificationContext<MyOwnNotificationContextMessage>>();
+
+//and use it !
+  
+_notificationContext.AddNotification(new MyOwnNotificationContextMessage(
+                DateTime.Now,
+                "Machine 1",
+                "Error Message",
+                "myCustomErrorLevel",
+                "myCustonErrorCode"
+            ));
+
 ```
