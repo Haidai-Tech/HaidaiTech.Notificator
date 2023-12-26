@@ -51,9 +51,11 @@ In projects using a dependency injection container, it is necessary to register 
 
 ```C#
 // The library provides NotificationContextMessage. You can use it if you want.
+// Register in your DI
 builder.Services.AddScoped<INotificationContext<NotificationContextMessage>, NotificationContext<NotificationContextMessage>>();
 
 // Or you can create your own Notification Context message
+// This class needs to implement `INotificationContextMessage`, and in the container, you must declare
 public class MyOwnNotificationContextMessage : INotificationContextMessage
 {
     public DateTime CreatedAt { get; private set; }
@@ -77,10 +79,6 @@ public class MyOwnNotificationContextMessage : INotificationContextMessage
         ErrorCode = errorCode;
     }
 }
-```
-
-This class needs to implement `INotificationContextMessage`, and in the container, you must declare
-
-```C#
+// and, Register in your DI
 builder.Services.AddScoped<INotificationContext<MyOwnNotificationContextMessage>, NotificationContext<MyOwnNotificationContextMessage>>();
 ```
