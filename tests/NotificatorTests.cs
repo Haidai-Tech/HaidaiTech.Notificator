@@ -4,12 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using CustomNotificationContext.CustomNotificationContext;
 using FluentValidation;
+using HaidaiTech.Notificator.Extensions;
 using HaidaiTech.Notificator.Helpers;
+using HaidaiTech.Notificator.Interfaces;
 using HaidaiTech.Notificator.NotificationContextMessages;
 using HaidaiTech.Notificator.NotificationContextPattern;
 using HaidaiTech.Notificator.Tests.Customer;
+using HaidaiTech.Notificator.Tests.CustomErrorLevel;
 using HaidaiTech.Notificator.Tests.Helpers;
 using HaidaiTech.Notificator.Tests.Validator;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace HaidaiTech.Notificator.Tests
@@ -18,7 +22,7 @@ namespace HaidaiTech.Notificator.Tests
         : BaseTest
     {
         [Fact]
-        public void ShouldHaveNotificationsUsingHelpers()
+        public void ShouldHaveNotificationsUsingNotificationContextErrorLevelHelper()
         {
             notificationContext.AddNotification(
                 new NotificationContextMessage(
@@ -56,7 +60,7 @@ namespace HaidaiTech.Notificator.Tests
         }
 
         [Fact]
-        public async Task ShouldHaveNotificationsUsingHelpersAsync()
+        public async Task ShouldHaveNotificationsUsingNotificationContextErrorLevelHelperAsync()
         {
 
             await notificationContext.AddNotificationAsync(
@@ -114,11 +118,35 @@ namespace HaidaiTech.Notificator.Tests
             );
 
             Assert.True(notificationContext.HasNotifications()
-            && notificationContext
-                    .GetNotifications()
-                    .Where(x => x.ErrorCode == errorCode &&
-                                x.ErrorLevel == errorLevel)
-                    .ToList().Count == 1);
+                            && notificationContext
+                                    .GetNotifications()
+                                    .Where(x => x.ErrorCode == errorCode &&
+                                                x.ErrorLevel == errorLevel)
+                                    .ToList().Count == 1);
+        }
+
+        [Theory]
+        [InlineData(MyCustomErrorLevel.MY_OWN_ERROR_LEVEL, nameof(MyCustomErrorLevel.MY_OWN_ERROR_LEVEL))]
+        public void ShouldHaveNotificationsUsingCustomizedErrorLevelExtensions(
+            string errorLevel,
+            string errorCode
+        )
+        {
+
+            notificationContext.AddNotification(
+                new NotificationContextMessage(
+                    "A normal notification",
+                    errorLevel,
+                    errorCode
+                )
+            );
+
+            Assert.True(notificationContext.HasNotifications()
+                            && notificationContext
+                                    .GetNotifications()
+                                    .Where(x => x.ErrorCode == errorCode &&
+                                                x.ErrorLevel == errorLevel)
+                                    .ToList().Count == 1);
         }
 
         [Fact]
@@ -378,6 +406,64 @@ namespace HaidaiTech.Notificator.Tests
                     .GetNotifications()
                     .Where(x => x.MachineName == "Machine 1")
                     .ToList().Count == 1);
+        }
+
+        [Fact]
+        public void ShouldRegisterServicesWithCustomNotificationContextMessage()
+        {
+            var services = new ServiceCollection();
+
+            services.AddNotificationContextService<MyOwnNotificationContextMessage>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var notificationContext = serviceProvider.GetRequiredService<INotificationContext<MyOwnNotificationContextMessage>>();
+
+            Assert.NotNull(notificationContext);
+        }
+
+        [Fact]
+        public void ShouldRegisterServicesWithGenericNotificationContextMessage()
+        {
+            var services = new ServiceCollection();
+
+            services.AddNotificationContextService();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var notificationContext = serviceProvider.GetRequiredService<INotificationContext<NotificationContextMessage>>();
+
+            Assert.NotNull(notificationContext);
+        }
+
+        [Fact]
+        public void ShouldAddGenecircNotificationContextToScopedContext()
+        {
+            var services = new ServiceCollection();
+
+            //services.AddScoped<INotificationContext<MyCustomNotificationContextMessage>, NotificationContext<MyCustomNotificationContextMessage>>();
+
+            services.AddScoped<INotificationContext<NotificationContextMessage>, NotificationContext<NotificationContextMessage>>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var notificationContext = serviceProvider.GetRequiredService<INotificationContext<NotificationContextMessage>>();
+
+            Assert.NotNull(notificationContext);
+        }
+
+        [Fact]
+        public void ShouldAddCustomNotificationContextMessageToScopedContext()
+        {
+            var services = new ServiceCollection();
+
+            services.AddScoped<INotificationContext<MyOwnNotificationContextMessage>, NotificationContext<MyOwnNotificationContextMessage>>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var notificationContext = serviceProvider.GetRequiredService<INotificationContext<MyOwnNotificationContextMessage>>();
+
+            Assert.NotNull(notificationContext);
         }
     }
 }

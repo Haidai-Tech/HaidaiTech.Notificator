@@ -1,7 +1,7 @@
 namespace HaidaiTech.Notificator.Helpers
 {
     /// <summary>
-    /// This class assists in handling customized error levels and can be extended as needed.
+    /// This class facilitates the management of customized error levels and can be extended as necessary.
     /// </summary>
     public class NotificationContextErrorLevelHelper
     {

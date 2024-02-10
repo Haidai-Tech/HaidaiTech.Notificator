@@ -3,8 +3,9 @@ using HaidaiTech.Notificator.Interfaces;
 namespace HaidaiTech.Notificator.NotificationContextMessages
 {
     /// <summary>
-    /// The default NotificationContextMessage class
+    /// Represents the default implementation of a notification message in the Notification Context.
     /// </summary>
+
     public sealed class NotificationContextMessage
         : INotificationContextMessage
     {

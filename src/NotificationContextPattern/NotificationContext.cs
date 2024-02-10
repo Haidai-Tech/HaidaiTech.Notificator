@@ -3,10 +3,13 @@ using System.Threading.Tasks;
 using HaidaiTech.Notificator.Interfaces;
 
 namespace HaidaiTech.Notificator.NotificationContextPattern
-{    /// <summary>
-     /// The NotificationContext class. TMessage is used to declare the implementation of INotificationContextMessage
-     /// </summary>
-     /// <typeparam name="TMessage">The class implementation of INotificationContextMessage</typeparam>
+{
+
+    /// <summary>
+    /// Represents the Notification Context, with TMessage defining the implementation of INotificationContextMessage.
+    /// </summary>
+    /// <typeparam name="TMessage">The class implementing the INotificationContextMessage interface.</typeparam>
+
     public sealed class NotificationContext<TMessage>
         : INotificationContext<TMessage>
         where TMessage : INotificationContextMessage

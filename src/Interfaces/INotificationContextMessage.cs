@@ -2,7 +2,7 @@
 namespace HaidaiTech.Notificator.Interfaces
 {
     /// <summary>
-    /// The default contract for NotificationContextMessage.
+    /// Represents the default contract for a Notification Context Message.
     /// </summary>
     public interface INotificationContextMessage
     { }

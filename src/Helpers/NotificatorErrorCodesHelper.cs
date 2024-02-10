@@ -1,8 +1,14 @@
 namespace HaidaiTech.Notificator.Helpers
 {
     /// <summary>
-    /// This class assists in handling customized errors and can be extended as needed.
+    /// This class facilitates the management of customized errors and can be extended as necessary.
     /// </summary>
+    /// <example>
+    /// <code>
+    /// NotificatorErrorCodeExtended : NotificatorErrorCodesHelper
+    /// </code>
+    /// </example>
+
     public class NotificatorErrorCodesHelper
     {
         public const string ERROR_CODE_000 = "ERROR_CODE_000";
