@@ -92,4 +92,38 @@ builder.Services.AddScoped<INotificationContext<MyCustomNotificationContextMessa
 
 ```
 
+```csharp
+ //on the controller
+
+ [Route("[controller]")]
+    public class CustomerController : Controller
+    {
+
+        private readonly IMediator _mediator;
+        private readonly INotificationContext<NotificationContextMessage> _notificationContext;
+
+        public CustomerController(
+            IMediator mediator,
+            INotificationContext<NotificationContextMessage> notificationContext
+        )
+        {
+            _mediator = mediator;
+            _notificationContext = notificationContext;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(AddNewCustomerCommand command)
+        {
+            var response = await _mediator.Send(command);
+
+            if (_notificationContext.HasNotifications())
+                return BadRequest(_notificationContext.GetNotifications());
+
+            return Ok(response);
+        }
+    }
+
+```
+
+
 This project follow the TDD pattern. If you read the [tests](https://github.com/Haidai-Tech/HaidaiTech.Notificator/tree/main/tests), you will understand the using of NotificationContext class.
