@@ -13,6 +13,8 @@ Haidai Notificator is a project developed by the Haidai team, implementing the N
 This release introduces an extension method that injects NotificationContext into the dependency injection container. Now you can do two things:
 
 ```csharp
+// ASP.NET Core 
+
 // Program.cs
 
 using HaidaiTech.Notificator.Interfaces;
@@ -38,58 +40,109 @@ builder.Services.AddScoped<INotificationContext<MyCustomNotificationContextMessa
 
 ```
 
-
 ```csharp
-// Example using DDD pattern
 
- public class AddNewCustomerCommandHandler
-        : IRequestHandler<AddNewCustomerCommand, string>
+//Console Application
+
+using System;
+using Microsoft.Extensions.DependencyInjection;
+using HaidaiTech.Notificator.Interfaces;
+using HaidaiTech.Notificator.NotificationContextMessages;
+using HaidaiTech.Notificator.NotificationContextPattern;
+using HaidaiTech.Notificator.Extensions;
+
+public class MyCustomNotificationContextMessage : INotificationContextMessage
+{
+    public string Message { get; set; }
+}
+
+class Program
+{
+    static void Main(string[] args)
     {
+        var serviceCollection = new ServiceCollection();
+        ConfigureServices(serviceCollection);
 
-        private readonly INotificationContext<NotificationContextMessage> _notificationContext;
+        var serviceProvider = serviceCollection.BuildServiceProvider();
 
+        var notificationContext = serviceProvider.GetService<INotificationContext<MyCustomNotificationContextMessage>>();
 
-        public AddNewCustomerCommandHandler(INotificationContext<NotificationContextMessage> notificationContext)
+        var notification = new MyCustomNotificationContextMessage { Message = "Nova notificação" };
+        notificationContext.AddNotification(notification);
+
+        if (notificationContext.HasNotifications())
         {
-            _notificationContext = notificationContext;
-        }
-
-        public async Task<string> Handle(
-            AddNewCustomerCommand request,
-            CancellationToken cancellationToken
-        )
-        {
-            //this code is only AN EXAMPLE, read again : E-X-A-M-P-L-E !!!! XD~
-
-            if (request.Name is null)
-                _notificationContext.AddNotification(new NotificationContextMessage(
-                    "The name is necessary",
-                    NotificationContextErrorLevelHelper.ATTENTION,
-                    NotificatorErrorCodesHelper.ERROR_CODE_027
-                ));
-
-            if (request.Age < 18)
-                _notificationContext.AddNotification(new NotificationContextMessage(
-                    "You must be 18",
-                    NotificationContextErrorLevelHelper.CRITICAL,
-                    NotificatorErrorCodesHelper.ERROR_CODE_072
-                ));
-
-
-            if (_notificationContext.HasNotifications())
-                return await Task.Run(() =>
-                {
-                    return "Problems";
-                });
-            else
-                return await Task.Run(() =>
-                {
-                    return "Ok";
-                });
-
+            Console.WriteLine("Existem notificações.");
         }
     }
 
+    private static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddNotificationContextService<MyCustomNotificationContextMessage>();
+    }
+}
+```
+
+```csharp
+
+// Worker
+
+ using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using HaidaiTech.Notificator.Interfaces;
+using HaidaiTech.Notificator.NotificationContextMessages;
+using HaidaiTech.Notificator.NotificationContextPattern;
+using HaidaiTech.Notificator.Extensions;
+
+public class MyCustomNotificationContextMessage : INotificationContextMessage
+{
+    public string Message { get; set; }
+}
+
+public class Worker : BackgroundService
+{
+    private readonly INotificationContext<MyCustomNotificationContextMessage> _notificationContext;
+
+    public Worker(INotificationContext<MyCustomNotificationContextMessage> notificationContext)
+    {
+        _notificationContext = notificationContext;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            var notification = new MyCustomNotificationContextMessage { Message = "Nova notificação" };
+            _notificationContext.AddNotification(notification);
+
+            if (_notificationContext.HasNotifications())
+            {
+                Console.WriteLine("Existem notificações.");
+            }
+
+            await Task.Delay(1000, stoppingToken);
+        }
+    }
+}
+
+class Program
+{
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddNotificationContextService<MyCustomNotificationContextMessage>();
+                services.AddHostedService<Worker>();
+            });
+}
 ```
 
 This project follow the TDD pattern. If you read the [tests](https://github.com/Haidai-Tech/HaidaiTech.Notificator/tree/main/tests), you will understand the using of NotificationContext class.
