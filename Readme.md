@@ -4,13 +4,17 @@ Haidai Notificator is a project developed by the Haidai team, implementing the N
 
 ## Release Versions
 
-- **2.1.0:** Added Method Extension to inject NotificationContext to DI
+- **3.0.0:** The `NotificationContextMessage` class now uses a factory method `Create()` instead of a public constructor. This is a breaking change that alters the instantiation pattern of the class.
 
 ## Release Notes
 
+### Version 3.0.0
+
+- Changed the instantiation of `NotificationContextMessage` to use a factory method `Create()` rather than the traditional `new()`. This breaking change provides better control over how instances of the class are created and managed.
+
 ### Version 2.1.0
 
-This release introduces an extension method that injects NotificationContext into the dependency injection container. Now you can do two things:
+This release introduces an extension method that injects NotificationContext into the dependency injection container. Now you can do:
 
 ```csharp
 // ASP.NET Core 
