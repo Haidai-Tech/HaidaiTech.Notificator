@@ -25,7 +25,7 @@ namespace HaidaiTech.Notificator.Tests
         public void ShouldHaveNotificationsUsingNotificationContextErrorLevelHelper()
         {
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                NotificationContextMessage.Create(
                     "A normal notification",
                     NotificationContextErrorLevelHelper.NORMAL,
                     ErrorCodeTestHelper.ERROR_CODE_100
@@ -33,7 +33,7 @@ namespace HaidaiTech.Notificator.Tests
             );
 
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                NotificationContextMessage.Create(
                     "An attention notification",
                     NotificationContextErrorLevelHelper.ATTENTION,
                     ErrorCodeTestHelper.ERROR_CODE_101
@@ -41,7 +41,7 @@ namespace HaidaiTech.Notificator.Tests
             );
 
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                NotificationContextMessage.Create(
                     "A critical notification",
                     NotificationContextErrorLevelHelper.CRITICAL,
                     ErrorCodeTestHelper.ERROR_CODE_102
@@ -49,7 +49,7 @@ namespace HaidaiTech.Notificator.Tests
             );
 
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                NotificationContextMessage.Create(
                     "A panic notification",
                     NotificationContextErrorLevelHelper.PANIC,
                     ErrorCodeTestHelper.ERROR_CODE_103
@@ -64,7 +64,7 @@ namespace HaidaiTech.Notificator.Tests
         {
 
             await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
+                NotificationContextMessage.Create(
                     "A normal notification",
                     NotificationContextErrorLevelHelper.NORMAL,
                     ErrorCodeTestHelper.ERROR_CODE_100
@@ -72,7 +72,7 @@ namespace HaidaiTech.Notificator.Tests
             );
 
             await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
+                NotificationContextMessage.Create(
                     "An Attention notification",
                     NotificationContextErrorLevelHelper.ATTENTION,
                     ErrorCodeTestHelper.ERROR_CODE_101
@@ -80,7 +80,7 @@ namespace HaidaiTech.Notificator.Tests
             );
 
             await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "A critical notification",
                     NotificationContextErrorLevelHelper.CRITICAL,
                     ErrorCodeTestHelper.ERROR_CODE_102
@@ -88,7 +88,7 @@ namespace HaidaiTech.Notificator.Tests
             );
 
             await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "A panic notification",
                     NotificationContextErrorLevelHelper.PANIC,
                     ErrorCodeTestHelper.ERROR_CODE_103
@@ -110,7 +110,7 @@ namespace HaidaiTech.Notificator.Tests
         {
 
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "A normal notification",
                     errorLevel,
                     errorCode
@@ -134,7 +134,7 @@ namespace HaidaiTech.Notificator.Tests
         {
 
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "A normal notification",
                     errorLevel,
                     errorCode
@@ -154,27 +154,27 @@ namespace HaidaiTech.Notificator.Tests
         {
 
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "xptp"
                 )
             );
 
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "A normal notification",
                     "NORMAL"
                 )
             );
 
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "An Attention notification",
                     "ATTENTION"
                 )
             );
 
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "A critical notification",
                     "CRITICAL"
                 )
@@ -190,21 +190,21 @@ namespace HaidaiTech.Notificator.Tests
         public async Task ShouldClearNotificationsAsync()
         {
             await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "A normal notification",
                     "NORMAL"
                 )
             );
 
             await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "An Attention notification",
                     "ATTENTION"
                 )
             );
 
             await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     "A critical notification",
                     "CRITICAL"
                 )
@@ -226,7 +226,7 @@ namespace HaidaiTech.Notificator.Tests
         )
         {
             notificationContext.AddNotification(
-                new NotificationContextMessage(
+                 NotificationContextMessage.Create(
                     errorMessage
                 )
             );
@@ -249,7 +249,7 @@ namespace HaidaiTech.Notificator.Tests
         )
         {
             notificationContext.AddNotification(
-                new NotificationContextMessage(errorMessage)
+                 NotificationContextMessage.Create(errorMessage)
             );
 
             Assert.True(notificationContext.HasNotifications()
@@ -270,7 +270,7 @@ namespace HaidaiTech.Notificator.Tests
         )
         {
             await notificationContext.AddNotificationAsync(
-                new NotificationContextMessage(errorMessage)
+                 NotificationContextMessage.Create(errorMessage)
             );
 
             Assert.True(notificationContext.HasNotifications()
@@ -289,8 +289,8 @@ namespace HaidaiTech.Notificator.Tests
             List<NotificationContextMessage> notifications
                 = new List<NotificationContextMessage>()
         {
-            new NotificationContextMessage("Notification 1"),
-            new NotificationContextMessage("Notification 2")
+             NotificationContextMessage.Create("Notification 1"),
+             NotificationContextMessage.Create("Notification 2")
         };
 
             notificationContext.AddNotifications(
@@ -306,8 +306,8 @@ namespace HaidaiTech.Notificator.Tests
         {
             List<NotificationContextMessage> notifications = new List<NotificationContextMessage>()
         {
-            new NotificationContextMessage("Notification 1"),
-            new NotificationContextMessage("Notification 2")
+             NotificationContextMessage.Create("Notification 1"),
+             NotificationContextMessage.Create("Notification 2")
         };
 
             await notificationContext.AddNotificationsAsync(
@@ -339,7 +339,7 @@ namespace HaidaiTech.Notificator.Tests
             result.Errors.ForEach(x =>
                 {
                     _notificationContextMessage.Add(
-                        new NotificationContextMessage(
+                         NotificationContextMessage.Create(
                             x.ErrorMessage,
                             typeof(Severity).GetEnumName(x.Severity),
                             x.ErrorCode

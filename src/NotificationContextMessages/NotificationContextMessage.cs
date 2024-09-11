@@ -28,7 +28,7 @@ namespace HaidaiTech.Notificator.NotificationContextMessages
         /// <value>string</value>
         public string ErrorCode { get; private set; } = default!;
 
-        public NotificationContextMessage(
+        private NotificationContextMessage(
             string message,
             string errorLevel = null,
             string errorCode = null
@@ -37,6 +37,18 @@ namespace HaidaiTech.Notificator.NotificationContextMessages
             Message = message;
             ErrorLevel = errorLevel;
             ErrorCode = errorCode;
+        }
+        public static NotificationContextMessage Create(
+            string message,
+            string errorLevel = null,
+            string errorCode = null
+        )
+        {
+            return new NotificationContextMessage(
+                message,
+                errorLevel,
+                errorCode
+            );
         }
     }
 }
