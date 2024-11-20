@@ -11,6 +11,12 @@ namespace HaidaiTech.Notificator.NotificationContextMessages
     {
 
         /// <summary>
+        /// A friendly message of a notification. Use this field to write friendly message to users/systems.
+        /// </summary>
+        /// <value>string</value>
+        public string FriendlyMessage { get; private set; } = default!;
+
+        /// <summary>
         /// The message of a notification.
         /// </summary>
         /// <value>string</value>
@@ -30,22 +36,26 @@ namespace HaidaiTech.Notificator.NotificationContextMessages
 
         private NotificationContextMessage(
             string message,
+            string friendlyMessage = null,
             string errorLevel = null,
             string errorCode = null
         )
         {
+            FriendlyMessage = friendlyMessage;
             Message = message;
             ErrorLevel = errorLevel;
             ErrorCode = errorCode;
         }
         public static NotificationContextMessage Create(
             string message,
+            string friendlyMessage = null,
             string errorLevel = null,
             string errorCode = null
         )
         {
             return new NotificationContextMessage(
                 message,
+                friendlyMessage,
                 errorLevel,
                 errorCode
             );
