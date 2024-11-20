@@ -4,7 +4,11 @@ Haidai Notificator is a project developed by the Haidai team, implementing the N
 
 ## Release Versions
 
-- **3.0.0:** The `NotificationContextMessage` class now uses a factory method `Create()` instead of a public constructor. This is a breaking change that alters the instantiation pattern of the class.
+- **4.0.0:** NotificationContext is Updated to version .NET 9.
+
+- **Added `FriendlyMessage` to `NotificationContextMessage`**: Introduced a `FriendlyMessage` property to improve communication in certain scenarios. Unlike technical messages, a `FriendlyMessage` is tailored for users or systems, making it more appropriate for display without exposing sensitive details. This approach enhances security by preventing the disclosure of internal issues.  
+
+- **Optimized `NotificationContext`**: Improved the internal implementation of `NotificationContext` for better performance and maintainability.
 
 ## Release Notes
 
@@ -28,7 +32,7 @@ using HaidaiTech.Notificator.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container. In this case, NotificationContextMessage will be used
 
 builder.Services.AddNotificationContextService();
 
@@ -91,7 +95,7 @@ class Program
 
 // Worker
 
- using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
