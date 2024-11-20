@@ -6,11 +6,13 @@ Haidai Notificator is a project developed by the Haidai team, implementing the N
 
 - **4.0.0:** NotificationContext is Updated to version .NET 9.
 
+## Release Notes
+
+### Version 4.0.0
+
 - **Added `FriendlyMessage` to `NotificationContextMessage`**: Introduced a `FriendlyMessage` property to improve communication in certain scenarios. Unlike technical messages, a `FriendlyMessage` is tailored for users or systems, making it more appropriate for display without exposing sensitive details. This approach enhances security by preventing the disclosure of internal issues.  
 
 - **Optimized `NotificationContext`**: Improved the internal implementation of `NotificationContext` for better performance and maintainability.
-
-## Release Notes
 
 ### Version 3.0.0
 
