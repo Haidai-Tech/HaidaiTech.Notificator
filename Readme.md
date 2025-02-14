@@ -4,7 +4,7 @@ Haidai Notificator is a project developed by the Haidai team, implementing the N
 
 ## Release Versions
 
-- **4.0.0:** NotificationContext is Updated to version .NET 9.
+- **4.0.1:** The libraries was updated to newest version.
 
 ## Release Notes
 
