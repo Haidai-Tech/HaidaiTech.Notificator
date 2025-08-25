@@ -1,7 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+<<<<<<< HEAD
     <TargetFrameworks>net9.0</TargetFrameworks>
+=======
+    <TargetFrameworks>net8.0</TargetFrameworks>
+>>>>>>> 8d88082 (Adiciona novo arquivo de configuração de pacotes e atualiza referências de pacotes nos projetos)
   </PropertyGroup>
 
   <ItemGroup>
