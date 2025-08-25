@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HaidaiTech.Notificator.Extensions
 {
-    public static class NotificationContextExtensions
+    public static partial class NotificationContextExtensions
     {
 
         /// <summary>
